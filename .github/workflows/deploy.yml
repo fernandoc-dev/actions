@@ -1,0 +1,23 @@
+name: Actualización del servidor compartido
+
+on:
+  push:
+    branches:
+      - main  # Cambia esto si estás usando una rama diferente
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v2
+
+      - name: Actualizar servidor compartido
+        uses: SamKirkland/FTP-Deploy-Action@4.1.1
+        with:
+          ftp-server: ${{ secrets.FTP_HOST }}
+          ftp-username: ${{ secrets.FTP_USERNAME }}
+          ftp-password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
+          remote-dir: ./  # Reemplaza esto con la ruta adecuada en tu servidor
