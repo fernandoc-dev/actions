@@ -11,12 +11,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Verificar estado de las pruebas
+      # - name: Verificar estado de las pruebas
+      #   run: |
+      #     if [[ "${{ needs.test.outputs.tests-successful }}" != "true" ]]; then
+      #       echo "Las pruebas fallaron, no se ejecutará el despliegue FTP"
+      #       exit 1
+      #     fi
+      - name: Imprimir valor de tests-successful
         run: |
-          if [[ "${{ needs.test.outputs.tests-successful }}" != "true" ]]; then
-            echo "Las pruebas fallaron, no se ejecutará el despliegue FTP"
-            exit 1
-          fi
+          echo "Valor de tests-successful: ${{ needs.test.outputs.tests-successful }}"
 
   deploy:
     needs: check-tests

@@ -29,5 +29,6 @@ jobs:
         id: run-tests
         run: |
           pytest
-          echo "tests-successful=true" >> $GITHUB_ENV
+          echo "::set-output name=tests-successful::true"
+          echo "tests-successful: ${{ steps.run-tests.outputs.tests-successful }}"
 
