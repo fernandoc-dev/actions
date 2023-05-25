@@ -1,19 +1,26 @@
 name: Actualización del servidor compartido
 
 on:
-  push:
-    branches:
-      - main  # Cambia esto si estás usando una rama diferente
   workflow_run:
     workflows: ["Python Tests"]
     types:
       - completed
 
-
 jobs:
-  deploy:
+  check-tests:
     runs-on: ubuntu-latest
-    # runs-on: ubuntu-18.04
+
+    steps:
+      - name: Verificar estado de las pruebas
+        run: |
+          if [[ "${{ needs.test.outputs.tests-successful }}" != "true" ]]; then
+            echo "Las pruebas fallaron, no se ejecutará el despliegue FTP"
+            exit 1
+          fi
+
+  deploy:
+    needs: check-tests
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout del código
@@ -21,7 +28,6 @@ jobs:
 
       - name: Actualizar servidor compartido
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        if: ${{ success() }}
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}

@@ -10,6 +10,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    outputs:
+      tests-successful: ${{ steps.run-tests.outputs.tests-successful }}
 
     steps:
       - name: Checkout repository
@@ -24,4 +26,8 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run tests
-        run: pytest
+        id: run-tests
+        run: |
+          pytest
+          echo "tests-successful=true" >> $GITHUB_ENV
+
