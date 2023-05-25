@@ -1,24 +1,27 @@
-name: Actualización del servidor compartido
-
+name: Python Tests
 on:
   push:
     branches:
-      - main  # Cambia esto si estás usando una rama diferente
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout del código
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Actualizar servidor compartido
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      - name: Set up Python
+        uses: actions/setup-python@v2
         with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          port: 21
-          local-dir: ./
-          remote-dir: ./  # Reemplaza esto con la ruta adecuada en tu servidor
+          python-version: 3.x
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        run: pytest
