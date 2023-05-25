@@ -22,4 +22,4 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: 21
           local-dir: ./
-          remote-dir: ./  # Reemplaza esto con la ruta adecuada en tu servidor
+          # remote-dir: ./  # Reemplaza esto con la ruta adecuada en tu servidor
