@@ -1,9 +1,14 @@
 name: Actualización del servidor compartido
 
 on:
-  push:
-    branches:
-      - main  # Cambia esto si estás usando una rama diferente
+  # push:
+  #   branches:
+  #     - main  # Cambia esto si estás usando una rama diferente
+  workflow_run:
+    workflows: ["Python Tests"]
+    types:
+      - completed
+
 
 jobs:
   deploy:
@@ -16,6 +21,7 @@ jobs:
 
       - name: Actualizar servidor compartido
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        if: ${{ success() }}
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
